@@ -1,23 +1,52 @@
-# BlogSpace Backend Project
-Frontend: HTML, CSS, JavaScript. Backend: Node.js and Express.js.
+# MongoDB database files for Blog Application
 
-## Run
-1. Install Node.js LTS.
-2. Open this folder in VS Code terminal.
-3. Run `npm install`.
-4. Copy `.env.example` to `.env`; set a long random `JWT_SECRET`.
-5. Run `npm start`.
-6. Visit http://localhost:3000 (do not open HTML directly).
+This folder contains the MongoDB connection and Mongoose models for a Node.js/Express blog project.
 
-## REST API
-| Method | Endpoint | Purpose |
-|---|---|---|
-| GET | /api/health | Check server |
-| POST | /api/auth/register | Register user |
-| POST | /api/auth/login | Login |
-| GET | /api/blogs | List public blogs |
-| POST | /api/blogs | Create blog (Bearer token) |
-| GET | /api/blogs/mine | User's blogs (Bearer token) |
-| DELETE | /api/blogs/:id | Delete own blog (Bearer token) |
+## Files
+- `config/db.js` — connects your Express backend to MongoDB.
+- `models/User.js` — user schema.
+- `models/Blog.js` — blog post schema; each blog references its author.
+- `.env.example` — environment variable template. Copy it to `.env` locally and add your real values.
+- `.gitignore` — prevents secrets and dependencies from being committed.
 
-Passwords are hashed with bcrypt and protected routes use JWT. Demo data is stored in data.json. For production, use a real database and additional security controls. Never upload `.env`, `data.json`, or `node_modules` to GitHub.
+## Install
+From your backend folder, run:
+
+```bash
+npm install mongoose dotenv
+```
+
+If your login/registration routes use password hashing and JWT authentication, also install:
+
+```bash
+npm install bcryptjs jsonwebtoken
+```
+
+## Configure
+1. Create a MongoDB Atlas cluster and database user.
+2. Copy `.env.example` to `.env` in your backend folder.
+3. Replace the `MONGO_URI` placeholder with your Atlas connection string.
+4. Replace `JWT_SECRET` with a long random secret.
+5. Keep `.env` private. Do not upload it to GitHub.
+
+## Connect in server.js
+At the top of your server file:
+
+```javascript
+require("dotenv").config();
+const connectDB = require("./config/db");
+```
+
+Before accepting requests, connect to the database:
+
+```javascript
+connectDB().catch((error) => {
+  console.error("Database connection failed:", error.message);
+  process.exit(1);
+});
+```
+
+Keep your existing Express routes and middleware. Adjust import paths if you place these files in a different folder.
+
+## Important
+These are database connection and schema files, not a database backup or a complete application. MongoDB Atlas stores the actual records online. Add these files to your existing backend, connect your existing API routes to the models, and test registration, login, blog creation, blog listing, and blog details before submitting.
