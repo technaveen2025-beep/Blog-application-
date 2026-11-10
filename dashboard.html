@@ -1,6 +1,30 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard | BlogSpace</title><link rel="stylesheet" href="css/style.css"></head>
-<body><header class="navbar"><a class="brand" href="index.html">BlogSpace</a><nav><a href="index.html">Home</a><a href="create-blog.html">Create Blog</a><button id="logoutBtn" class="nav-button">Logout</button></nav></header>
-<main class="container dashboard"><div class="dashboard-top"><div><p class="eyebrow">YOUR WORKSPACE</p><h1>Dashboard</h1><p id="welcomeText" class="muted">Manage your blog posts.</p></div><a class="btn" href="create-blog.html">+ New blog</a></div>
-<h2>Your blog posts</h2><section id="dashboardList" class="blog-grid"></section><p id="dashboardMessage" class="message"></p></main><script src="js/script.js"></script></body></html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="dashboard">
+    <header>
+      <h1>My Dashboard</h1>
+      <button id="logoutBtn" type="button">Logout</button>
+    </header>
+
+    <section class="profile">
+      <h2>My Profile</h2>
+      <p><strong>Name:</strong> <span id="userName">Loading...</span></p>
+      <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
+    </section>
+
+    <section>
+      <h2>My Blogs</h2>
+      <div id="myBlogs">Loading your blogs...</div>
+    </section>
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
