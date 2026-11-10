@@ -1,0 +1,7 @@
+Render settings (adjust to your project):
+Root Directory: backend
+Build Command: npm install
+Start Command: npm start
+
+Make sure backend/package.json contains a working "start" script.
+Set MONGO_URI and JWT_SECRET in Render Environment settings.

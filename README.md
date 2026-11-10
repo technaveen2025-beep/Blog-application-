@@ -1,107 +1,138 @@
-# Authentication & Dashboard
+# Full Stack Blog Application
 
-This is an integration package for a Blog Application using Node.js, Express, MongoDB, and JWT.
+A full-stack blog application where users can register, log in, and manage their own blog posts.
+
+## Live Demo
+
+- Frontend URL: `ADD_YOUR_VERCEL_URL_HERE`
+- Backend API URL: `ADD_YOUR_RENDER_URL_HERE`
+- GitHub Repository: `ADD_YOUR_GITHUB_REPOSITORY_URL_HERE`
 
 ## Features
-- User registration with hashed passwords (bcryptjs)
-- User login and JWT token generation
-- Protected dashboard API routes
-- User profile display
-- Display only the logged-in user's blogs
-- Logout by clearing the saved token
 
-## 1. Install backend packages
+- User registration and login
+- JWT-based authentication
+- Protected dashboard
+- User profile
+- Create, read, update, and delete blog posts
+- Users can view and manage their own posts
+- Responsive user interface
 
-From your existing backend folder:
+> Remove or edit any feature above that is not implemented and tested in your application.
+
+## Technologies Used
+
+- Frontend: HTML, CSS, JavaScript
+- Backend: Node.js, Express.js
+- Database: MongoDB / MongoDB Atlas
+- Authentication: JSON Web Tokens (JWT), bcryptjs
+- Deployment: Vercel (frontend), Render (backend)
+
+## Project Structure
+
+```text
+Blog-Application/
+├── frontend/
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── dashboard.html
+│   ├── style.css
+│   └── ...
+├── backend/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   ├── server.js
+│   ├── package.json
+│   └── ...
+├── README.md
+└── .gitignore
+```
+
+Update this structure to match your actual repository.
+
+## Run Locally
+
+### Backend
 
 ```bash
-npm install express mongoose bcryptjs jsonwebtoken dotenv
+cd backend
+npm install
 ```
 
-If your frontend and backend run on different origins, configure CORS in your existing server:
-
-```bash
-npm install cors
-```
-
-Then in `server.js`:
-
-```js
-const cors = require("cors");
-app.use(cors());
-app.use(express.json());
-```
-
-## 2. Expected existing MongoDB models
-
-This package expects `backend/models/User.js` to export a Mongoose model with:
-- `name` (String)
-- `email` (String, unique)
-- `password` (String)
-
-It expects `backend/models/Blog.js` to export a model with:
-- `title` (String)
-- `content` (or `description`)
-- `author` (ObjectId referencing the User model)
-
-If your existing model uses different field names, update the route code to match it. Your blog creation route must save the logged-in user's ID in `author`.
-
-## 3. Add the routes to backend/server.js
-
-Keep your existing MongoDB connection and other routes. Add:
-
-```js
-require("dotenv").config();
-
-const authRoutes = require("./routes/auth");
-const dashboardRoutes = require("./routes/dashboard");
-
-app.use("/api/auth", authRoutes);
-app.use("/api/dashboard", dashboardRoutes);
-```
-
-Make sure `app.use(express.json())` is registered before the routes.
-
-Add a private JWT secret to your local `.env` file:
+Create a private `.env` file in the backend folder:
 
 ```env
-JWT_SECRET=replace_this_with_a_long_random_secret
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_long_random_secret
 ```
 
-Do not upload `.env` to GitHub. Use `.env.example` as a template only.
+Start the backend:
 
-## 4. Connect the frontend
+```bash
+npm start
+```
 
-- Copy `dashboard.html` and `dashboard.js` into your frontend folder.
-- Update `API_BASE` in the JavaScript files if your backend URL is different.
-- Add the logic from `login-integration.js` to your existing login form handler.
-- Ensure your login form uses IDs `loginForm`, `email`, and `password` if using the example event listener.
+### Frontend
 
-## 5. API endpoints
+Open the frontend using your local development server or the method used by your project. Update the frontend API base URL to your backend URL.
 
-| Method | Endpoint | Purpose |
+## Deployment
+
+### Backend on Render
+
+- Connect this GitHub repository to Render.
+- Set the backend root directory (for example, `backend`).
+- Build command: `npm install`
+- Start command: `npm start`
+- Add `MONGO_URI`, `JWT_SECRET`, and any other required environment variables in Render's environment settings.
+- Set `NODE_ENV=production` if your app uses it.
+
+### Frontend on Vercel
+
+- Import this GitHub repository into Vercel.
+- Set the frontend root directory (for example, `frontend`).
+- For a plain HTML/CSS/JavaScript project, use the Other framework preset and leave the build command empty unless your project requires one.
+- Update the API base URL to the deployed backend URL.
+- Configure backend CORS to allow your deployed frontend domain.
+
+## API Endpoints
+
+Update this table to match your actual backend routes.
+
+| Method | Endpoint | Description |
 |---|---|---|
 | POST | `/api/auth/register` | Register a user |
-| POST | `/api/auth/login` | Log in and receive JWT |
+| POST | `/api/auth/login` | Log in |
 | GET | `/api/dashboard/profile` | Get logged-in user's profile |
-| GET | `/api/dashboard/my-blogs` | Get only the logged-in user's blogs |
+| GET | `/api/dashboard/my-blogs` | Get logged-in user's blogs |
+| GET | `/api/blogs` | List blogs |
+| POST | `/api/blogs` | Create a blog |
+| PUT | `/api/blogs/:id` | Update a blog |
+| DELETE | `/api/blogs/:id` | Delete a blog |
 
-For protected requests, send this HTTP header:
+## Testing Checklist
 
-`Authorization: Bearer YOUR_TOKEN`
+- [ ] Registration works
+- [ ] Login works
+- [ ] Protected routes reject requests without a valid token
+- [ ] Dashboard displays the correct user profile
+- [ ] Users can see only their own blogs where intended
+- [ ] Create, update, and delete operations work
+- [ ] Logout works
+- [ ] Frontend works on mobile screen sizes
+- [ ] Deployed frontend can communicate with deployed backend
 
-## 6. Test before submitting
+## Security
 
-1. Start MongoDB and your backend.
-2. Register a test account.
-3. Log in and confirm a token is returned.
-4. Open the dashboard and confirm profile details load.
-5. Create a blog while logged in and confirm it appears under My Blogs.
-6. Log out and confirm the dashboard redirects to the login page.
-7. Try the dashboard API without a token; it should return HTTP 401.
+- Never commit `.env` files, database passwords, JWT secrets, or API keys.
+- Store deployment secrets in Render's environment settings.
+- Use HTTPS in production.
+- Configure CORS for the actual frontend domain.
+- Use secure cookie-based token storage and additional protections for production deployments.
 
-## Important security note
+## Screenshots
 
-This is a learning/demo implementation. For production applications, prefer secure HttpOnly cookies and add protections such as rate limiting, input validation, HTTPS, and appropriate CORS settings. A frontend redirect is not security by itself; the backend middleware protects the API.
-
-This package is a set of integration files, not a complete replacement for your existing project. Merge it with your current code and test it before describing the milestone as completed.
+Add screenshots of your homepage, login page, dashboard, and mobile layout here.

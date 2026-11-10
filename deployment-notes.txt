@@ -1,0 +1,8 @@
+Vercel settings for a plain HTML/CSS/JavaScript frontend:
+Root Directory: frontend
+Framework Preset: Other
+Build Command: leave empty (unless your project needs one)
+Output Directory: leave empty or use the directory containing index.html, as appropriate.
+
+Update the frontend API base URL to your deployed Render backend URL.
+Configure backend CORS to allow your deployed Vercel domain.
